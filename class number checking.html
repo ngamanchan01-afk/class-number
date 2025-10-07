@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>午休功課追蹤儀表板</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f7f6; /* 淺灰色背景 */
+        }
+        h1 {
+            color: #185a9d; /* 標題深藍色 */
+            margin-bottom: 40px;
+        }
+        #class-grid {
+            /* 使用 CSS Grid 網格佈局，排版類似 Canva 的卡片 */
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 6 欄位排列，適合 24 人 (6x4) */
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        /* 未完成功課的初始樣式 */
+        .class-number {
+            padding: 20px 0; /* 調整高度 */
+            background-color: #f7b731; /* 初始：橘黃色 (代表待完成) */
+            color: white;
+            font-size: 2.2em; /* 放大字體 */
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            user-select: none; /* 防止點擊時選中文字 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px; /* 確保卡片大小一致 */
+        }
+        .class-number:hover {
+            transform: scale(1.03); /* 滑鼠懸停時微小放大 */
+        }
+        /* 已完成功課的樣式：點擊後顏色變綠 */
+        .class-number.finished {
+            background-color: #5cb85c; /* 完成：綠色 */
+            box-shadow: 0 4px 6px rgba(44, 160, 44, 0.3);
+        }
+        .reset-info {
+            margin-top: 40px;
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+
+        /* 響應式設計：在小螢幕上只顯示 4 欄 */
+        @media (max-width: 768px) {
+            #class-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>午休自由行前要做好一份功課</h1>
+    <div id="class-grid">
+        </div>
+    <div class="reset-info">
+        *本追蹤系統為每日即時使用，不儲存資料，關閉或重新整理頁面後，狀態將**自動重置**。
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const classGrid = document.getElementById('class-grid');
+            const totalStudents = 24;
+
+            // 1. 動態生成 1 到 24 號碼
+            for (let i = 1; i <= totalStudents; i++) {
+                const numberDiv = document.createElement('div');
+                numberDiv.classList.add('class-number');
+                numberDiv.textContent = i;
+                
+                // 2. 附加點擊事件監聽器
+                numberDiv.addEventListener('click', function() {
+                    // 3. 核心功能：點擊後切換「完成」狀態 (顏色切換)
+                    this.classList.toggle('finished');
+                    
+                    // 點擊回饋：讓按鈕有微小的彈跳效果
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = ''; // 延遲後重設 transform
+                    }, 100);
+                });
+
+                classGrid.appendChild(numberDiv);
+            }
+        });
+    </script>
+</body>
+</html>
